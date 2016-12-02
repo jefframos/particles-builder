@@ -17,7 +17,7 @@ export default class Particle extends PIXI.Container {
 
          // this.sprite = PIXI.Sprite.fromFrame('additiveTriangleParticle.jpg');
         // this.sprite = PIXI.Sprite.fromFrame('additiveHardParticle.jpg');
-        this.sprite = PIXI.Sprite.fromFrame(params.particleSrc?params.particleSrc:'additiveParticle.png');
+        this.sprite = params.sprite?params.sprite:(PIXI.Sprite.fromFrame(params.particleSrc?params.particleSrc:'additiveParticle.png'));
         this.sprite.blendMode = params.blendMode != undefined ?params.blendMode:PIXI.BLEND_MODES.ADD;
         this.sprite.anchor.set(0.5);
         this.sprite.tint = params.tint?params.tint:0xFFFFFF
@@ -37,7 +37,7 @@ export default class Particle extends PIXI.Container {
     }
 
     update ( dt ) {
-    	this.rotation += this.rotationSpeed;
+    	this.sprite.rotation += this.rotationSpeed;
     	this.life -= dt;
     	this.nlife = this.life / this.maxLifetime;
     	this.velocity.y +=this.gravity;

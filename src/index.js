@@ -2,7 +2,7 @@ import plugins from './plugins';
 import config  from './config';
 import Game from './Game';
 import ScreenManager from './screenManager/ScreenManager';
-import PBSScreen from './game/screen/PBSScreen';
+import ParticleBuilderScreen from './game/screen/ParticleBuilderScreen';
 
 
 
@@ -17,13 +17,13 @@ function configGame(){
 	//create screen manager
 	let screenManager = new ScreenManager();
 	//add screens
-	let startScreen = new PBSScreen('PBSScreen');
+	let startScreen = new ParticleBuilderScreen('ParticleBuilderScreen');
 
 	game.stage.addChild(screenManager);
 
 	screenManager.addScreen(startScreen);
 	//change to init screen
-	screenManager.forceChange('PBSScreen');	
+	screenManager.forceChange('ParticleBuilderScreen');	
 
 	game.start();
 }

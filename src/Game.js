@@ -6,10 +6,10 @@ export default class Game {
 		//config.width = window.screen.width;
 		//config.height = window.screen.height;
 		this.ratio = config.width / config.height;		
-		this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
-		document.body.appendChild(this.renderer.view);
+		window.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
+		document.body.appendChild(window.renderer.view);
 
-		this.animationLoop = new PIXI.AnimationLoop(this.renderer);
+		this.animationLoop = new PIXI.AnimationLoop(window.renderer);
 		this.animationLoop.on('prerender', this.update.bind(this));
 		this.resize();
 	}
@@ -21,8 +21,8 @@ export default class Game {
 			var w = window.innerWidth;
 			var h = window.innerWidth / this.ratio;
 		}
-		this.renderer.view.style.width = w + 'px';
-		this.renderer.view.style.height = h + 'px';
+		window.renderer.view.style.width = w + 'px';
+		window.renderer.view.style.height = h + 'px';
 	}
 
 	update(){

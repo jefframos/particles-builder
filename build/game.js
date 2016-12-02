@@ -28053,9 +28053,9 @@
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
-	var _PBSScreen = __webpack_require__(139);
+	var _ParticleBuilderScreen = __webpack_require__(139);
 	
-	var _PBSScreen2 = _interopRequireDefault(_PBSScreen);
+	var _ParticleBuilderScreen2 = _interopRequireDefault(_ParticleBuilderScreen);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28068,13 +28068,13 @@
 		//create screen manager
 		var screenManager = new _ScreenManager2.default();
 		//add screens
-		var startScreen = new _PBSScreen2.default('PBSScreen');
+		var startScreen = new _ParticleBuilderScreen2.default('ParticleBuilderScreen');
 	
 		game.stage.addChild(screenManager);
 	
 		screenManager.addScreen(startScreen);
 		//change to init screen
-		screenManager.forceChange('PBSScreen');
+		screenManager.forceChange('ParticleBuilderScreen');
 	
 		game.start();
 	}
@@ -28121,48 +28121,15 @@
 		value: true
 	});
 	exports.default = {
-		cookieManager: null,
 		width: 1025,
 		height: 508,
-		middlePoint: { x: 1608 / 2, y: 276 / 2 },
-		bounds: { x: 10, y: 20 },
-		squareSize: 20,
-		hitCorrection: { x: 20, y: 50 },
-		buttonRadius: 30,
-		debugAlpha: 0,
-		isJuicy: 1,
-		pixelSize: 1,
-		pieceSize: 22,
-		hardcore: false,
 		webgl: true,
-		currentLevel: 0,
-		firstEntry: false,
 		effectsLayer: null,
 		rendererOptions: {
 			//pixi rendererOptions
-			//resolution:2,
+			resolution: 2,
 			antialias: true,
-			backgroundColor: 0x000000
-		},
-		palette: {
-			highlightColor: 0xA547A4,
-			tileColor: 0xFFFFFF,
-			playerColor: 0x0040A5,
-			playerHightlightColor: 0x00FF00,
-			opponentHightlightColor: 0xFF0000,
-			opponentColor: 0xFF40A5,
-			initScreen80: 0xDB1993,
-			winGameColor: 0x16A51C,
-			lostGameColor: 0x8E0081,
-			drawGameColor: 0xA547A4,
-			colors80: [0xFC3C3A, //red
-			0xFFA226, //orange
-			0x19db30, //green
-			0x44A6C6, //light blue
-			0xDB1993 //pink
-			],
-			currentGameStateColor: 0x00aa00,
-			gameScreen80: 0xDB1993
+			backgroundColor: 0xff0000
 		}
 	};
 
@@ -28194,10 +28161,10 @@
 			//config.width = window.screen.width;
 			//config.height = window.screen.height;
 			this.ratio = config.width / config.height;
-			this.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
-			document.body.appendChild(this.renderer.view);
+			window.renderer = new Renderer(config.width || 800, config.height || 600, config.rendererOptions);
+			document.body.appendChild(window.renderer.view);
 	
-			this.animationLoop = new _pixi2.default.AnimationLoop(this.renderer);
+			this.animationLoop = new _pixi2.default.AnimationLoop(window.renderer);
 			this.animationLoop.on('prerender', this.update.bind(this));
 			this.resize();
 		}
@@ -28212,8 +28179,8 @@
 					var w = window.innerWidth;
 					var h = window.innerWidth / this.ratio;
 				}
-				this.renderer.view.style.width = w + 'px';
-				this.renderer.view.style.height = h + 'px';
+				window.renderer.view.style.width = w + 'px';
+				window.renderer.view.style.height = h + 'px';
 			}
 		}, {
 			key: 'update',
@@ -28379,10 +28346,6 @@
 	
 	var _Particle2 = _interopRequireDefault(_Particle);
 	
-	var _Mouse = __webpack_require__(145);
-	
-	var _Mouse2 = _interopRequireDefault(_Mouse);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28391,311 +28354,149 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var PBSScreen = function (_Screen) {
-			_inherits(PBSScreen, _Screen);
+	var ParticleBuilderScreen = function (_Screen) {
+			_inherits(ParticleBuilderScreen, _Screen);
 	
-			function PBSScreen(label) {
-					_classCallCheck(this, PBSScreen);
+			function ParticleBuilderScreen(label) {
+					_classCallCheck(this, ParticleBuilderScreen);
 	
-					return _possibleConstructorReturn(this, (PBSScreen.__proto__ || Object.getPrototypeOf(PBSScreen)).call(this, label));
+					return _possibleConstructorReturn(this, (ParticleBuilderScreen.__proto__ || Object.getPrototypeOf(ParticleBuilderScreen)).call(this, label));
 			}
 	
-			_createClass(PBSScreen, [{
+			_createClass(ParticleBuilderScreen, [{
 					key: 'build',
 					value: function build() {
-							_get(PBSScreen.prototype.__proto__ || Object.getPrototypeOf(PBSScreen.prototype), 'build', this).call(this);
+							_get(ParticleBuilderScreen.prototype.__proto__ || Object.getPrototypeOf(ParticleBuilderScreen.prototype), 'build', this).call(this);
 	
-							this.listsOfParticles = [];
+							this.backGround = new _pixi2.default.Graphics();
+							this.backGround.beginFill(0xF06103);
+							this.backGround.drawRect(0, 0, _config2.default.width, _config2.default.height);
+							this.addChild(this.backGround);
+	
+							var teste1 = _utils2.default.createDotTexture({ width: 32, height: 32 });
+							this.addChild(teste1);
+	
+							teste1.x = 100;
+	
+							var teste2 = _utils2.default.createDotTexture({ width: 32, height: 32, innerRadius: 5, outerRadius: 10 });
+							this.addChild(teste2);
+	
+							teste2.x = teste1.x + teste1.width;
+	
+							teste1.y = 100;
+							teste2.y = 100;
+	
+							var perlinContainer = new _pixi2.default.Container();
+	
+							var teste3 = _utils2.default.perlinNoise({ width: 128, height: 128, opacity: 1 });
+							// var teste3 = utils.createNoiseTexture({width:128, height:128, opacity:1});
+							perlinContainer.addChild(teste3);
+							//teste3.x = teste2.x + teste2.width + 100
+	
+	
+							var teste8 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
+							this.addChild(teste8);
+							teste8.x = 250;
+							teste8.y = 250;
+	
+							var teste4 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
+							perlinContainer.addChild(teste4);
+							//teste4.x = teste3.x;
+							//teste4.y = teste3.y;
+							teste4.blendMode = _pixi2.default.BLEND_MODES.MULTIPLY;
+	
+							// perlinContainer.x = 500;
+							// perlinContainer.y = 300;
+	
+							console.log(window.renderer);
+	
+							//window.renderer.generateTexture(perlinContainer);
+							var teste = new _pixi2.default.Sprite(perlinContainer.generateTexture(window.renderer));
+	
+							this.addChild(teste);
+							teste.x = 500;
+							teste.y = 300;
+							//PIXI.CanvasRenderer.generateTexture(perlinContainer)
+	
+							//TweenLite.to(teste4, 5, {x:100})
+	
+							//perlinContainer.cacheAsBitmap = true;
+	
+							teste.blendMode = _pixi2.default.BLEND_MODES.ADD;
+	
+							//this.addChild(perlinContainer)
+	
+							this.emiter = new _pixi2.default.Container();
 							this.particleList = [];
-							this.snowParticleList = [];
 	
-							this.listsOfParticles.push(this.particleList);
-							this.listsOfParticles.push(this.snowParticleList);
-							this.setUpSnow();
-							this.setUpFireplace();
+							// var teste5 = utils.perlinNoise({width:128, height:128});
+							// this.addChild(teste5)
+	
+							this.cacheTexture = perlinContainer.generateTexture(window.renderer); //utils.perlinNoise({width:128, height:128});
+	
+	
+							this.addChild(this.emiter);
+	
+							this.counter = 0;
 					}
 			}, {
 					key: 'update',
 					value: function update(delta) {
-							_get(PBSScreen.prototype.__proto__ || Object.getPrototypeOf(PBSScreen.prototype), 'update', this).call(this, delta);
-	
-							this.mouse.update(delta);
-	
-							this.updateParticles(delta);
-	
-							if (this.gradeShadow.alpha > 0.1) {
-									this.gradeShadow.alpha -= 0.001;
-							}
+							// console.log(this);
+							this.updateParticle(delta);
 					}
 			}, {
-					key: 'setUpSnow',
-					value: function setUpSnow() {
-							this.snowContainer = new _pixi2.default.Container();
-							this.addChild(this.snowContainer);
+					key: 'createParticle',
+					value: function createParticle() {
+							this.counter = 0.01 * Math.random();
 	
-							this.snowBackground = new _pixi2.default.Graphics();
-							this.snowBackground.beginFill(0x00C3F7);
-							this.snowBackground.drawRect(0, 0, _config2.default.width, _config2.default.height / 2);
-							this.snowContainer.addChild(this.snowBackground);
-							this.snowContainer.y = _config2.default.height / 2;
-	
-							this.snowEmitter = new _pixi2.default.Container();
-							this.snowEmitter.x = 0;
-							this.snowEmitter.y = 0;
-							this.snowContainer.addChild(this.snowEmitter);
-	
-							this.snowBase = _pixi2.default.Sprite.fromFrame('snowBase.png');
-							this.snowBase.x = 0;
-							this.snowBase.y = this.snowContainer.height - this.snowBase.height;
-							this.snowBase.width = this.snowContainer.width;
-							this.snowContainer.addChild(this.snowBase);
-	
-							this.snowWind = 0;
-	
-							this.createSnow();
-					}
-			}, {
-					key: 'createSnow',
-					value: function createSnow() {
 							var params = {};
-							params.particleSrc = 'snow.png';
-							params.blendMode = _pixi2.default.BLEND_MODES.NORMAL;
-							var alpha = Math.random() < 0.5 ? 1 : 0.9;
+							params.sprite = new _pixi2.default.Sprite(this.cacheTexture);
+							//params.blendMode = PIXI.BLEND_MODES.NORMAL;
+							var alpha = Math.random() * 0.5 + 0.3;
 							params.scale = Math.random() * 0.5 + 0.3;
-							params.gravity = 0.008 + Math.random() * 0.01;
-							params.velocity = { x: Math.random() * 0.5 - 0.25, y: Math.random() * 0.5 + 0.5 };
+							params.gravity = 0.008 + Math.random() * 0.05;
+							params.velocity = { x: (Math.random() * 0.5 - 0.25) * 5, y: (Math.random() * 0.5 + 0.5) * -1 - 2 };
 							params.alphaScale = [0, alpha, alpha, alpha, alpha, alpha, 0];
-							params.lifetime = 5; //3 + Math.random() * 3;
+							params.lifetime = 1 + Math.random() * 3;
+							params.rotationSpeed = Math.random() * 0.01 - 0.005; //3 + Math.random() * 3;
 	
 							var particle = new _Particle2.default(params);
-							particle.x = Math.random() * _config2.default.width;
-							particle.y = Math.random() * -30;
-							this.snowParticleList.push(particle);
-							this.snowEmitter.addChild(particle);
-					}
-			}, {
-					key: 'setUpFireplace',
-					value: function setUpFireplace() {
-	
-							this.fireplaceContainer = new _pixi2.default.Container();
-							this.addChild(this.fireplaceContainer);
-	
-							this.fireplaceBackground = new _pixi2.default.Graphics();
-							this.fireplaceBackground.beginFill(0xC63605);
-							this.fireplaceBackground.drawRect(0, 0, _config2.default.width, _config2.default.height / 2);
-							this.fireplaceContainer.addChild(this.fireplaceBackground);
-	
-							this.wall1 = new _pixi2.default.Graphics();
-							this.wall1.beginFill(0x8C2003);
-							this.wall1.drawRect(0, 0, _config2.default.width / 5, _config2.default.height / 2 - 30);
-							this.fireplaceContainer.addChild(this.wall1);
-	
-							this.wall2 = new _pixi2.default.Graphics();
-							this.wall2.beginFill(0x8C2003);
-							this.wall2.drawRect(0, 0, _config2.default.width / 5, _config2.default.height / 2 - 30);
-							this.wall2.x = _config2.default.width - this.wall2.width;
-							this.fireplaceContainer.addChild(this.wall2);
-	
-							this.everything = new _pixi2.default.Container();
-							this.addChild(this.everything);
-	
-							this.backFireplace = _pixi2.default.Sprite.fromFrame('backFire.png');
-							this.backFireplace.scale.set(0.5);
-							this.everything.addChild(this.backFireplace);
-							this.backFireplace.x = _config2.default.width / 2 - this.backFireplace.width / 2;
-							this.backFireplace.y = this.fireplaceBackground.height / 2 - this.backFireplace.height / 2;
-	
-							this.fireEmitter = new _pixi2.default.Container();
-							this.fireEmitter.x = _config2.default.width / 2;
-							this.fireEmitter.y = this.fireplaceBackground.height / 2 + 25;
-							this.everything.addChild(this.fireEmitter);
-							//this.createParticles();
-	
-							this.fireParticleAccum = 1;
-							this.snowParticleAccum = 0;
-	
-							var fireTextures = [];
-							for (var i = 0; i < 7; i++) {
-									var texture = _pixi2.default.Texture.fromFrame('newFire000' + (i + 1) + '.png');
-									fireTextures.push(texture);
-							}
-	
-							this.fireContainer = new _pixi2.default.Container();
-							this.fire = new _pixi2.default.MovieClip(fireTextures);
-							this.fire.animationSpeed = 0.2;
-							this.fire.x = -this.fire.width * 0.5;
-							this.fire.y = -this.fire.height * 0.9;
-							this.fire.gotoAndPlay(0);
-							this.fireContainer.x = _config2.default.width / 2 - this.fire.width / 2 - this.fire.x;
-							this.fireContainer.y = this.fireplaceBackground.height / 2 - 240 - this.fire.y;
-							this.everything.addChild(this.fireContainer);
-							this.fireContainer.addChild(this.fire);
-	
-							this.fireContainer.scale.set(0);
-							this.fireContainer.rotation = 45 / 180 * 3.14;
-	
-							var timeline = new TimelineLite();
-	
-							timeline.add(_gsap2.default.to(this.fireContainer.scale, 0.1, { x: 0.8, y: 0.2 }));
-							timeline.add(_gsap2.default.to(this.fireContainer.scale, 0.5, { x: 0.3, y: 0.7 }));
-							timeline.add(_gsap2.default.to(this.fireContainer.scale, 0.2, { x: 0.5, y: 0.5 }));
-	
-							_gsap2.default.to(this.fireContainer, 2, { rotation: 0, ease: 'easeOutElastic' });
-	
-							this.wood = _pixi2.default.Sprite.fromFrame('wood.png');
-							this.wood.scale.set(0.5);
-							this.everything.addChild(this.wood);
-							this.wood.x = _config2.default.width / 2 - this.wood.width / 2;
-							this.wood.y = this.fireplaceBackground.height / 2 - this.wood.height / 2 + 65;
-	
-							this.woodShadow = _pixi2.default.Sprite.fromFrame('woodShadow.png');
-							this.woodShadow.scale.set(0.5);
-							this.everything.addChild(this.woodShadow);
-							this.woodShadow.x = _config2.default.width / 2 - this.woodShadow.width / 2 - 4;
-							this.woodShadow.y = this.fireplaceBackground.height / 2 + 90;
-	
-							this.tapete = _pixi2.default.Sprite.fromFrame('tapete.png');
-							this.tapete.scale.set(0.5);
-							this.everything.addChild(this.tapete);
-							this.tapete.x = _config2.default.width / 2 - this.tapete.width / 2;
-							this.tapete.y = this.fireplaceBackground.height / 2 + 125;
-	
-							this.grade = _pixi2.default.Sprite.fromFrame('grade.png');
-							this.grade.scale.set(0.5);
-							this.everything.addChild(this.grade);
-							this.grade.x = _config2.default.width / 2 - this.grade.width / 2;
-							this.grade.y = this.fireplaceBackground.height / 2 - this.grade.height / 2 + 78;
-	
-							this.gradeShadow = _pixi2.default.Sprite.fromFrame('gradeShadow.png');
-							this.gradeShadow.scale.set(0.5);
-							this.everything.addChild(this.gradeShadow);
-							this.gradeShadow.x = _config2.default.width / 2 - this.gradeShadow.width / 2 - 2;
-							this.gradeShadow.y = this.fireplaceBackground.height / 2 + 108;
-							this.gradeShadow.alpha = 0;
-							_gsap2.default.to(this.gradeShadow, 1, { alpha: 0.2, delay: 0.2 });
-	
-							this.bricks1 = _pixi2.default.Sprite.fromFrame('bricks1.png');
-							this.bricks1.scale.set(0.5);
-							this.everything.addChild(this.bricks1);
-							this.bricks1.x = _config2.default.width / 2 - this.bricks1.width * 3;
-							this.bricks1.y = this.fireplaceBackground.height / 2 - this.bricks1.height / 2;
-	
-							this.bricks2 = _pixi2.default.Sprite.fromFrame('bricks2.png');
-							this.bricks2.scale.set(0.5);
-							this.everything.addChild(this.bricks2);
-							this.bricks2.x = _config2.default.width / 2 + this.bricks2.width * 2;
-							this.bricks2.y = this.fireplaceBackground.height / 2 - this.bricks2.height / 2;
-	
-							this.mouse = new _Mouse2.default();
-							this.mouse.x = this.tapete.x + 55;
-							this.mouse.y = this.tapete.y + 20;
-							//this.mouse.scale.set(0.7)
-							this.everything.addChild(this.mouse);
-	
-							this.everything.y = -30;
-							// this.createBacklight();
-	
-							// this.createRocks();
-					}
-			}, {
-					key: 'createRocks',
-					value: function createRocks() {
-	
-							var direction = Math.random() < 0.5 ? 1 : -1;
-							var params = {};
-							params.particleSrc = 'rock.png';
-							params.blendMode = _pixi2.default.BLEND_MODES.NORMAL;
-							params.tint = 0x333333;
-							params.scale = 0.5;
-							params.gravity = 0.15;
-							params.rotationSpeed = 0.1 * direction;
-							params.scaleIncrease = { x: 0.002, y: 0.002 };
-							params.velocity = { x: (Math.random() * 2 + 2) * direction, y: -Math.random() * 2 - 3 };
-							params.alphaScale = [1, 1, 1, 1, 0];
-							params.lifetime = 1; //3 + Math.random() * 3;
-	
-	
-							var particle = new _Particle2.default(params);
-							//particle.x = Math.random() * 120 - (60 * -direction)
-							particle.y = -20;
+							particle.x = _config2.default.width / 2;
+							particle.y = 200;
 							this.particleList.push(particle);
-							this.fireEmitter.addChild(particle);
 	
-							// this.gradeShadow.alpha = 0.3;	
+							this.emiter.addChild(particle);
 					}
 			}, {
-					key: 'createBacklight',
-					value: function createBacklight() {
-							if (Math.random() < 0.05) this.createRocks();
-							var params = {};
-							params.tint = 0xFFF100;
-							params.scale = 8 + 5 * Math.random();
-							params.velocity = { x: 0, y: -Math.random() * 0.5 };
-							params.alphaScale = [0, 0.2, 0];
-							params.lifetime = 1 + Math.random() * 3; //3 + Math.random() * 3;
-	
-							var particle = new _Particle2.default(params);
-							//particle.x = Math.random() * 120 - 60
-							this.particleList.push(particle);
-							this.fireEmitter.addChild(particle);
-	
-							_gsap2.default.to(this.gradeShadow, 0.2, { alpha: 0.3 });
+					key: 'updateParticle',
+					value: function updateParticle(delta) {
+							if (this.counter < 0) {
+									this.createParticle();
+							} else {
+									this.counter -= delta;
+							}
+							for (var i = 0; i < this.particleList.length; i++) {
+									this.particleList[i].update(delta);
+							}
+							for (var i = 0; i < this.particleList.length; i++) {
+									if (this.particleList[i].kill) {
+											this.particleList.splice(i, 1);
+									}
+							}
 					}
 			}, {
-					key: 'createParticles',
-					value: function createParticles() {
-							var particle = new _Particle2.default();
-							particle.x = Math.random() * 120 - 60;
-							this.particleList.push(particle);
-							this.fireEmitter.addChild(particle);
-					}
-			}, {
-					key: 'updateParticles',
-					value: function updateParticles(delta) {
-							this.fireParticleAccum -= delta;
-							this.snowParticleAccum -= delta;
-							if (this.fireParticleAccum < 0) {
-									this.createBacklight();
-									this.fireParticleAccum = 0.7;
-							}
+					key: 'transitionIn',
+					value: function transitionIn() {
 	
-							if (this.snowParticleAccum < 0) {
-									for (var i = Math.random() * 8 + 5; i >= 0; i--) {
-											this.createSnow();
-									}
-									this.snowParticleAccum = 1.3;
-							}
-	
-							for (var i = this.listsOfParticles.length - 1; i >= 0; i--) {
-									for (var j = this.listsOfParticles[i].length - 1; j >= 0; j--) {
-											this.listsOfParticles[i][j].update(delta);
-									}
-									for (var j = this.listsOfParticles[i].length - 1; j >= 0; j--) {
-											if (this.listsOfParticles[i][j].kill) {
-													this.listsOfParticles[i].splice(j, 1);
-											}
-									}
-							}
-							this.snowWind += 2 * Math.random();
-							var sinWind = Math.sin(this.snowWind * 3.14 / 180);
-							for (var i = this.snowParticleList.length - 1; i >= 0; i--) {
-	
-									if (this.snowParticleList[i].y >= this.snowBackground.height - this.snowParticleList[i].height) {
-											//this.snowParticleList[i].height*1.5){
-											this.snowParticleList[i].gravity = 0;
-											this.snowParticleList[i].velocity = { x: 0, y: 0.15 };
-											this.snowParticleList[i].scaleIncrease = { x: 0.01, y: -0.01 };
-									} else {
-											this.snowParticleList[i].velocity.x = sinWind * (500 * this.snowParticleList[i].gravity * (this.snowParticleList[i].scale.x * 1.75)) * delta; // * this.snowParticleList[i].gravity;
-									}
-							}
+							_get(ParticleBuilderScreen.prototype.__proto__ || Object.getPrototypeOf(ParticleBuilderScreen.prototype), 'transitionIn', this).call(this);
 					}
 			}]);
 	
-			return PBSScreen;
+			return ParticleBuilderScreen;
 	}(_Screen3.default);
 	
-	exports.default = PBSScreen;
+	exports.default = ParticleBuilderScreen;
 
 /***/ },
 /* 140 */
@@ -36518,7 +36319,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	var _config = __webpack_require__(136);
@@ -36528,76 +36329,134 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = {
-	  getRandomValue: function getRandomValue(array, exception) {
-	    var value = array[Math.floor(Math.random() * array.length)];
-	    if (exception) {
-	      var equal = true;
-	      while (equal) {
-	        equal = false;
-	        for (var i = 0; i < exception.length; i++) {
-	          if (exception[i] == value) {
-	            equal = true;
-	          }
+	    getRandomValue: function getRandomValue(array, exception) {
+	        var value = array[Math.floor(Math.random() * array.length)];
+	        if (exception) {
+	            var equal = true;
+	            while (equal) {
+	                equal = false;
+	                for (var i = 0; i < exception.length; i++) {
+	                    if (exception[i] == value) {
+	                        equal = true;
+	                    }
+	                }
+	                if (equal) {
+	                    value = array[Math.floor(Math.random() * array.length)];
+	                }
+	            }
 	        }
-	        if (equal) {
-	          value = array[Math.floor(Math.random() * array.length)];
+	        return value;
+	    },
+	    createNoiseTexture: function createNoiseTexture(config) {
+	
+	        var params = config ? config : {};
+	
+	        var canvas = document.createElement('canvas');
+	        canvas.width = params.width ? params.width : 32;
+	        canvas.height = params.height ? params.height : 32;
+	
+	        var ctx = canvas.getContext('2d'),
+	            x,
+	            y,
+	            number,
+	            opacity = params.opacity ? params.opacity : 0.2;
+	
+	        for (x = 0; x < canvas.width; x++) {
+	            for (y = 0; y < canvas.height; y++) {
+	                number = Math.floor(Math.random() * 60);
+	                ctx.fillStyle = "rgba(" + number + "," + number + "," + number + "," + opacity + ")";
+	                ctx.fillRect(x, y, 1, 1);
+	            }
 	        }
-	      }
+	
+	        var sprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(canvas));
+	        sprite.anchor.set(0.5);
+	        return sprite;
+	    },
+	    createDotTexture: function createDotTexture(config) {
+	
+	        var params = config ? config : {};
+	
+	        var canvas = document.createElement('canvas');
+	        canvas.width = params.width ? params.width : 32;
+	        canvas.height = params.height ? params.height : 32;
+	
+	        var ctx = canvas.getContext('2d');
+	
+	        var x = canvas.width / 2,
+	            y = canvas.height / 2,
+	
+	        // Radii of the white glow.
+	        innerRadius = config.innerRadius ? config.innerRadius : 0,
+	            outerRadius = config.outerRadius ? config.outerRadius : canvas.width * 0.3,
+	
+	        // Radius of the entire circle.
+	        radius = canvas.width;
+	
+	        var gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+	        gradient.addColorStop(0, 'white');
+	        gradient.addColorStop(0.5, '#333');
+	        // gradient.addColorStop(0.75, '#030303');
+	        gradient.addColorStop(0.75, '#020202');
+	        gradient.addColorStop(0.95, '#010101');
+	        gradient.addColorStop(1, 'black');
+	
+	        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+	
+	        ctx.fillStyle = gradient;
+	        ctx.fill();
+	
+	        var sprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(canvas));
+	        sprite.anchor.set(0.5);
+	        return sprite;
+	    },
+	    perlinNoise: function perlinNoise(config) {
+	        var params = config ? config : {};
+	
+	        var canvas = document.createElement('canvas');
+	        canvas.width = params.width ? params.width : 32;
+	        canvas.height = params.height ? params.height : 32;
+	
+	        var noise = this.randomNoise(canvas);
+	        var ctx = canvas.getContext('2d');
+	        ctx.save();
+	
+	        /* Scale random iterations onto the canvas to generate Perlin noise. */
+	        for (var size = 4; size <= noise.width; size *= 2) {
+	            var x = Math.random() * (noise.width - size) | 0,
+	                y = Math.random() * (noise.height - size) | 0;
+	            ctx.globalAlpha = 4 / size;
+	            ctx.drawImage(noise, x, y, size, size, 0, 0, canvas.width, canvas.height);
+	        }
+	
+	        ctx.restore();
+	        var sprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(canvas));
+	        sprite.anchor.set(0.5);
+	        return sprite;
+	    },
+	    randomNoise: function randomNoise(canvas, x, y, width, height, alpha) {
+	        var canvas = document.createElement('canvas');
+	        x = x || 0;
+	        y = y || 0;
+	        width = width || canvas.width;
+	        height = height || canvas.height;
+	        alpha = alpha || 255;
+	        var g = canvas.getContext("2d"),
+	            imageData = g.getImageData(x, y, width, height),
+	            random = Math.random,
+	            pixels = imageData.data,
+	            n = pixels.length,
+	            i = 0;
+	        while (i < n) {
+	            pixels[i++] = pixels[i++] = pixels[i++] = random() * 256 | 0;
+	            pixels[i++] = alpha;
+	        }
+	        g.putImageData(imageData, x, y);
+	        return canvas;
+	    },
+	    pointDistance: function pointDistance(x1, y1, x2, y2) {
+	        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	    }
-	    return value;
-	  },
-	  correctPosition: function correctPosition(element) {
-	    var x = Math.floor(element.position.x / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    var y = Math.floor(element.position.y / _config2.default.pixelSize) * _config2.default.pixelSize;
-	    element.position.x = x;
-	    element.position.y = y;
-	  },
-	  setGameScreen80: function setGameScreen80(color) {
-	    _config2.default.palette.gameScreen80 = color;
-	  },
-	  setInitScreen80: function setInitScreen80(color) {
-	    _config2.default.palette.initScreen80 = color;
-	  },
-	  applyPositionCorrection: function applyPositionCorrection(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    element.position.x += _config2.default.hitCorrection.x;
-	    element.position.y += _config2.default.hitCorrection.y;
-	  },
-	  addToContainer: function addToContainer(element) {
-	    var elementContainer = new PIXI.Container();
-	    elementContainer.addChild(element);
-	    return elementContainer;
-	  },
-	  centerPivot: function centerPivot(element) {
-	    element.pivot.x = element.width / 2;
-	    element.pivot.y = element.height / 2;
-	    element.position.x += element.width / 2;
-	    element.position.y += element.height / 2;
-	  },
-	  addMockRect: function addMockRect(element, width, height) {
-	    var fake = new PIXI.Graphics();
-	    fake.beginFill(0);
-	    fake.drawRect(-width, -height, width * 2, height * 2);
-	    fake.alpha = 0;
-	    element.addChild(fake);
-	  },
-	  pointDistance: function pointDistance(x1, y1, x2, y2) {
-	    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-	  },
-	  addMockObject: function addMockObject(element) {
-	    if (_config2.default.isJuicy == 0) {
-	      return;
-	    }
-	    var alphaBG2 = new PIXI.Graphics();
-	    alphaBG2.beginFill(0);
-	    alphaBG2.drawRect(-element.width / 2, -element.height / 2, element.width, element.height);
-	    alphaBG2.position.x -= _config2.default.hitCorrection.x;
-	    alphaBG2.position.y -= _config2.default.hitCorrection.y;
-	    alphaBG2.alpha = _config2.default.debugMockobjectsAlpha;
-	    element.addChild(alphaBG2);
-	  }
 	};
 
 /***/ },
@@ -36776,7 +36635,7 @@
 	        // this.sprite = PIXI.Sprite.fromFrame('additiveHardParticle.jpg');
 	        var _this = _possibleConstructorReturn(this, (Particle.__proto__ || Object.getPrototypeOf(Particle)).call(this));
 	
-	        _this.sprite = _pixi2.default.Sprite.fromFrame(params.particleSrc ? params.particleSrc : 'additiveParticle.png');
+	        _this.sprite = params.sprite ? params.sprite : _pixi2.default.Sprite.fromFrame(params.particleSrc ? params.particleSrc : 'additiveParticle.png');
 	        _this.sprite.blendMode = params.blendMode != undefined ? params.blendMode : _pixi2.default.BLEND_MODES.ADD;
 	        _this.sprite.anchor.set(0.5);
 	        _this.sprite.tint = params.tint ? params.tint : 0xFFFFFF;
@@ -36799,7 +36658,7 @@
 	    _createClass(Particle, [{
 	        key: 'update',
 	        value: function update(dt) {
-	            this.rotation += this.rotationSpeed;
+	            this.sprite.rotation += this.rotationSpeed;
 	            this.life -= dt;
 	            this.nlife = this.life / this.maxLifetime;
 	            this.velocity.y += this.gravity;
@@ -36843,223 +36702,6 @@
 	}(_pixi2.default.Container);
 	
 	exports.default = Particle;
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Mouse = function (_PIXI$Container) {
-	    _inherits(Mouse, _PIXI$Container);
-	
-	    function Mouse() {
-	        _classCallCheck(this, Mouse);
-	
-	        var _this = _possibleConstructorReturn(this, (Mouse.__proto__ || Object.getPrototypeOf(Mouse)).call(this));
-	
-	        _this.mcContainer = new _pixi2.default.Container();
-	        _this.addChild(_this.mcContainer);
-	
-	        var idleTextures = [];
-	        for (var i = 0; i < 15; i++) {
-	            if (i + 1 > 9) {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseIdle00' + (i + 1) + '.png');
-	            } else {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseIdle000' + (i + 1) + '.png');
-	            }
-	            idleTextures.push(texture);
-	            texture.smooth = true;
-	        }
-	        _this.mouseIdle = new _pixi2.default.MovieClip(idleTextures);
-	        _this.mouseIdle.animationSpeed = 0.4;
-	        _this.mouseIdle.gotoAndPlay(0);
-	        _this.mcContainer.addChild(_this.mouseIdle);
-	
-	        var flipTextures = [];
-	        for (var _i = 0; _i < 21; _i++) {
-	            if (_i + 1 > 9) {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseFlip00' + (_i + 1) + '.png');
-	            } else {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseFlip000' + (_i + 1) + '.png');
-	            }
-	            flipTextures.push(texture);
-	            texture.smooth = true;
-	        }
-	        _this.mouseFlip = new _pixi2.default.MovieClip(flipTextures);
-	        _this.mouseFlip.animationSpeed = 0.4;
-	        _this.mouseFlip.x = 1;
-	        _this.mouseFlip.y = 0;
-	        _this.mouseFlip.gotoAndStop(0);
-	        _this.mcContainer.addChild(_this.mouseFlip);
-	
-	        var runTextures = [];
-	        for (var _i2 = 0; _i2 < 14; _i2++) {
-	            if (_i2 + 1 > 9) {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseRun00' + (_i2 + 1) + '.png');
-	            } else {
-	                var texture = _pixi2.default.Texture.fromFrame('mouseRun000' + (_i2 + 1) + '.png');
-	            }
-	            runTextures.push(texture);
-	            texture.smooth = true;
-	        }
-	        _this.mouseRun = new _pixi2.default.MovieClip(runTextures);
-	        _this.mouseRun.animationSpeed = 0.5;
-	        _this.mouseRun.x = -15;
-	        _this.mouseRun.y = -5;
-	        _this.mouseRun.gotoAndStop(0);
-	        _this.mcContainer.addChild(_this.mouseRun);
-	
-	        _this.standardScale = 0.5;
-	
-	        _this.mouseIdle.scale.set(_this.standardScale);
-	        _this.mouseFlip.scale.set(_this.standardScale);
-	        _this.mouseRun.scale.set(_this.standardScale);
-	        _this.mouseIdle.anchor.set(0.5, 1);
-	        _this.mouseFlip.anchor.set(0.5, 1);
-	        _this.mouseRun.anchor.set(0.5, 1);
-	
-	        _this.side = 1;
-	        _this.state = 0;
-	
-	        _this.updateState();
-	        // this.scale.set(1.5)
-	
-	        _this.timer = 3.0;
-	        _this.nextAction = _this.changeState;
-	        // setTimeout(() => {
-	        //     this.changeState();
-	        // }, 3000);
-	        _this.velocity = { x: 0, y: 0 };
-	        return _this;
-	    }
-	
-	    _createClass(Mouse, [{
-	        key: 'changeState',
-	        value: function changeState() {
-	            if (this.state == 0 || this.state == 1) {
-	                this.state = 2;
-	                this.mouseRun.gotoAndPlay(7);
-	                this.velocity.x = 255 * this.side;
-	
-	                this.timer = 1.5;
-	                this.nextAction = this.changeState;
-	
-	                // setTimeout(() => {
-	                //     this.changeState();
-	                // }, 2300);
-	            } else if (this.state == 2) {
-	                this.state = 0;
-	                this.velocity.x = 0;
-	
-	                this.mouseIdle.scale.x = this.standardScale * 1.1;
-	                this.mouseIdle.scale.y = this.standardScale * 0.9;
-	                TweenLite.to(this.mouseIdle.scale, 1, { x: this.standardScale, y: this.standardScale, ease: 'easeOutElastic' });
-	
-	                this.timer = 1.0;
-	                this.nextAction = this.flipMouse;
-	                // setTimeout(() => {
-	                //     this.flipMouse();
-	                // }, 3000);
-	            }
-	            this.updateState();
-	        }
-	    }, {
-	        key: 'afterFlipMouse',
-	        value: function afterFlipMouse() {
-	            this.scale.x = this.side; //= -1;
-	            this.state = 0;
-	
-	            this.mouseFlip.gotoAndStop(0);
-	
-	            TweenLite.to(this.mouseIdle.scale, 0.4, { x: this.standardScale * 1.1, y: this.standardScale * 0.9 });
-	            TweenLite.to(this.mouseIdle.scale, 1, { delay: 0.4, x: this.standardScale, y: this.standardScale, ease: 'easeOutElastic' });
-	
-	            this.updateState();
-	
-	            this.timer = 2.0;
-	            this.nextAction = this.changeState;
-	            // setTimeout(() => {
-	            //     this.changeState();
-	            // }, 2000);
-	        }
-	    }, {
-	        key: 'flipMouse',
-	        value: function flipMouse() {
-	            this.state = 1;
-	
-	            this.mouseFlip.scale.set(this.standardScale);
-	            TweenLite.to(this.mouseFlip.scale, 0.5, { x: this.standardScale * 1.1, y: this.standardScale * 0.9 });
-	
-	            this.mouseFlip.gotoAndPlay(0);
-	            this.updateState();
-	            this.side *= -1;
-	
-	            this.timer = 0.86;
-	            this.nextAction = this.afterFlipMouse;
-	            // setTimeout(() => {
-	            //     this.afterFlipMouse();
-	            // }, 850);
-	        }
-	    }, {
-	        key: 'updateState',
-	        value: function updateState() {
-	            console.log('updateState', this.state);
-	            switch (this.state) {
-	                case 0:
-	                    this.mouseIdle.visible = true;
-	                    this.mouseFlip.visible = false;
-	                    this.mouseRun.visible = false;
-	                    break;
-	                case 1:
-	                    this.mouseIdle.visible = false;
-	                    this.mouseFlip.visible = true;
-	                    this.mouseRun.visible = false;
-	                    break;
-	                case 2:
-	                    this.mouseIdle.visible = false;
-	                    this.mouseFlip.visible = false;
-	                    this.mouseRun.visible = true;
-	                    break;
-	            }
-	        }
-	    }, {
-	        key: 'update',
-	        value: function update(dt) {
-	            this.timer -= dt;
-	
-	            if (this.timer <= 0) {
-	                this.timer = 999999;
-	                console.log('next action');
-	                this.nextAction();
-	            }
-	            this.x += this.velocity.x * dt;
-	            this.y += this.velocity.y * dt;
-	        }
-	    }]);
-	
-	    return Mouse;
-	}(_pixi2.default.Container);
-	
-	exports.default = Mouse;
 
 /***/ }
 /******/ ]);

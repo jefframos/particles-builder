@@ -68,10 +68,10 @@ export default {
         var gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
         gradient.addColorStop(0, 'white');
         gradient.addColorStop(0.5, '#333');
-        // gradient.addColorStop(0.75, '#030303');
-        gradient.addColorStop(0.75, '#020202');
-        gradient.addColorStop(0.95, '#010101');
-        gradient.addColorStop(1, 'black');
+         // gradient.addColorStop(0.75, '#030303');
+         gradient.addColorStop(0.75, '#020202');
+         gradient.addColorStop(0.95, '#010101');
+        gradient.addColorStop(0.7, 'black');
 
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
 

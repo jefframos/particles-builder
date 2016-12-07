@@ -15,27 +15,36 @@ export default class Particle extends PIXI.Container {
 
     	super();
 
+        this.params = params;
          // this.sprite = PIXI.Sprite.fromFrame('additiveTriangleParticle.jpg');
         // this.sprite = PIXI.Sprite.fromFrame('additiveHardParticle.jpg');
-        this.sprite = params.sprite?params.sprite:(PIXI.Sprite.fromFrame(params.particleSrc?params.particleSrc:'additiveParticle.png'));
-        this.sprite.blendMode = params.blendMode != undefined ?params.blendMode:PIXI.BLEND_MODES.ADD;
-        this.sprite.anchor.set(0.5);
-        this.sprite.tint = params.tint?params.tint:0xFFFFFF
-        this.scale.set(params.scale != undefined ?params.scale:2.5);
-        this.addChild(this.sprite);
-        this.alpha = 1;
-        this.scaleIncrease = params.scaleIncrease != undefined?params.scaleIncrease:{x:0,y:0};
-        this.kill = false;
-        this.velocity = params.velocity?params.velocity:{x:(Math.random()-0.5)/2, y:-Math.random()*1.2}
-        this.alphaScale = params.alphaScale != null?params.alphaScale:[0,0.2,0];
-        this.maxLifetime = params.lifetime?params.lifetime:2;
-        this.rotationSpeed = params.rotationSpeed?params.rotationSpeed:0;
-        this.life = this.maxLifetime;
-        this.nlife = 0;
-        this.gravity = params.gravity?params.gravity:0;
+        this.reset();
+        
 
     }
+    reset(){
+        this.sprite = this.params.sprite?this.params.sprite:(PIXI.Sprite.fromFrame(this.params.particleSrc?this.params.particleSrc:'additiveParticle.png'));
+        this.sprite.blendMode = this.params.blendMode != undefined ?this.params.blendMode:PIXI.BLEND_MODES.ADD;
+        this.spawnArea = this.params.spawnArea != undefined ?this.params.spawnArea:{x:0,y:0,w:1,h:1};
+        this.sprite.anchor.set(0.5);
+        this.sprite.tint = this.params.tint?this.params.tint:0xFFFFFF
+        this.scale.set(this.params.scale != undefined ?this.params.scale:2.5);
+        this.addChild(this.sprite);
+        this.alpha = 1;
+        this.scaleIncrease = this.params.scaleIncrease != undefined?this.params.scaleIncrease:{x:0,y:0};
+        this.kill = false;
+        this.velocity = this.params.velocity?this.params.velocity:{x:(Math.random()-0.5)/2, y:-Math.random()*1.2}
+        this.alphaScale = this.params.alphaScale != null?this.params.alphaScale:[0,0.2,0];
+        this.maxLifetime = this.params.lifetime?this.params.lifetime:2;
+        this.rotationSpeed = this.params.rotationSpeed?this.params.rotationSpeed:0;
+        this.life = this.maxLifetime;
+        this.nlife = 0;
+        this.gravity = this.params.gravity?this.params.gravity:0;
 
+        this.x = (this.spawnArea.w - this.spawnArea.x) * Math.random();
+        this.y = (this.spawnArea.h - this.spawnArea.y) * Math.random();
+
+    }
     update ( dt ) {
     	this.sprite.rotation += this.rotationSpeed;
     	this.life -= dt;

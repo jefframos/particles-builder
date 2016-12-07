@@ -28386,6 +28386,29 @@
 							teste1.y = 100;
 							teste2.y = 100;
 	
+							var testeContainer = new _pixi2.default.Container();
+							var teste8 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
+	
+							var blur = new _pixi2.default.filters.BlurFilter();
+							blur.blurX = 20;
+							blur.blurY = 20;
+							blur.blur = 50;
+	
+							testeContainer.filters = [blur];
+							window.blur = blur;
+	
+							this.addChild(testeContainer);
+							testeContainer.addChild(teste8);
+							testeContainer.x = 250;
+							testeContainer.y = 280;
+	
+							var testeContainer2 = new _pixi2.default.Container();
+							var teste832 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
+							this.addChild(testeContainer2);
+							testeContainer2.addChild(teste832);
+							testeContainer2.x = 100;
+							testeContainer2.y = 280;
+	
 							var perlinContainer = new _pixi2.default.Container();
 	
 							var teste3 = _utils2.default.perlinNoise({ width: 128, height: 128, opacity: 1 });
@@ -28394,16 +28417,25 @@
 							//teste3.x = teste2.x + teste2.width + 100
 	
 	
-							var teste8 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
-							this.addChild(teste8);
-							teste8.x = 250;
-							teste8.y = 250;
-	
 							var teste4 = _utils2.default.createDotTexture({ width: 128, height: 128, innerRadius: 0, outerRadius: 128 / 2 });
-							perlinContainer.addChild(teste4);
+	
+							var blur = new _pixi2.default.filters.BlurFilter();
+							blur.blurX = 20;
+							blur.blurY = 20;
+							blur.blur = 50;
+	
+							var noise = new _pixi2.default.filters.NoiseFilter();
+	
+							blur.blur = 50;
+	
+							teste4.filters = [blur];
+							var dotBlur = new _pixi2.default.Sprite(teste4.generateTexture(window.renderer));
+							perlinContainer.addChild(dotBlur);
+							//teste3.filters = [noise]
+							dotBlur.anchor.set(0.5);
 							//teste4.x = teste3.x;
 							//teste4.y = teste3.y;
-							teste4.blendMode = _pixi2.default.BLEND_MODES.MULTIPLY;
+							dotBlur.blendMode = _pixi2.default.BLEND_MODES.MULTIPLY;
 	
 							// perlinContainer.x = 500;
 							// perlinContainer.y = 300;
@@ -28429,6 +28461,9 @@
 							this.emiter = new _pixi2.default.Container();
 							this.particleList = [];
 	
+							this.emiter.x = _config2.default.width / 2;
+							this.emiter.y = _config2.default.height / 2;
+	
 							// var teste5 = utils.perlinNoise({width:128, height:128});
 							// this.addChild(teste5)
 	
@@ -28445,6 +28480,30 @@
 							// console.log(this);
 							this.updateParticle(delta);
 					}
+	
+					// createParticle(){
+					// 	this.counter = 0.01 *  Math.random();
+	
+					// 	let params = {};
+					// 	params.sprite = new PIXI.Sprite(this.cacheTexture)
+					// 	//params.blendMode = PIXI.BLEND_MODES.NORMAL;
+					// 	let alpha = Math.random() *0.5 + 0.1;
+					// 	params.scale =  Math.random()*0.5 + 0.3;
+					// 	params.gravity = 0.008 + Math.random() * 0.05;
+					// 	params.velocity = {x:(Math.random() * 0.5 - 0.25)*5, y:(Math.random() * 0.5 + 0.5)*-1 - 2}
+					// 	params.alphaScale = [0,alpha,alpha,alpha,alpha,alpha,0]
+					// 	params.lifetime = 1 + Math.random() * 3;
+					// 	params.rotationSpeed = Math.random() *0.01 - 0.005//3 + Math.random() * 3;
+	
+					// 	let particle = new Particle(params);
+					// 	particle.x = config.width/2;
+					// 	particle.y =200;
+					// 	this.particleList.push(particle);
+	
+	
+					// 	this.emiter.addChild(particle);
+					// }
+	
 			}, {
 					key: 'createParticle',
 					value: function createParticle() {
@@ -28453,17 +28512,19 @@
 							var params = {};
 							params.sprite = new _pixi2.default.Sprite(this.cacheTexture);
 							//params.blendMode = PIXI.BLEND_MODES.NORMAL;
-							var alpha = Math.random() * 0.5 + 0.3;
-							params.scale = Math.random() * 0.5 + 0.3;
+							var alpha = Math.random() * 0.5 + 0.1;
+							params.scale = Math.random() * 0.5 + 0.3 + 1;
 							params.gravity = 0.008 + Math.random() * 0.05;
 							params.velocity = { x: (Math.random() * 0.5 - 0.25) * 5, y: (Math.random() * 0.5 + 0.5) * -1 - 2 };
 							params.alphaScale = [0, alpha, alpha, alpha, alpha, alpha, 0];
 							params.lifetime = 1 + Math.random() * 3;
 							params.rotationSpeed = Math.random() * 0.01 - 0.005; //3 + Math.random() * 3;
 	
+							params.spawnArea = { x: -50, y: -50, w: 100, h: 100 };
+	
 							var particle = new _Particle2.default(params);
-							particle.x = _config2.default.width / 2;
-							particle.y = 200;
+							// particle.x = config.width/2;
+							// particle.y =200;
 							this.particleList.push(particle);
 	
 							this.emiter.addChild(particle);
@@ -36399,7 +36460,7 @@
 	        // gradient.addColorStop(0.75, '#030303');
 	        gradient.addColorStop(0.75, '#020202');
 	        gradient.addColorStop(0.95, '#010101');
-	        gradient.addColorStop(1, 'black');
+	        gradient.addColorStop(0.7, 'black');
 	
 	        ctx.arc(x, y, radius, 0, 2 * Math.PI);
 	
@@ -36598,7 +36659,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -36616,89 +36677,99 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var Particle = function (_PIXI$Container) {
-	    _inherits(Particle, _PIXI$Container);
+	  _inherits(Particle, _PIXI$Container);
 	
-	    /**
-	    	params.particleSrc
-	    	params.blendMode
-	    	params.tint
-	    	params.scale
-	    	params.scaleIncrease
-	    	params.velocity
-	    	params.alphascale
-	    	params.lifetime
-	    **/
-	    function Particle(params) {
-	        _classCallCheck(this, Particle);
+	  /**
+	  	params.particleSrc
+	  	params.blendMode
+	  	params.tint
+	  	params.scale
+	  	params.scaleIncrease
+	  	params.velocity
+	  	params.alphascale
+	  	params.lifetime
+	  **/
+	  function Particle(params) {
+	    _classCallCheck(this, Particle);
 	
-	        // this.sprite = PIXI.Sprite.fromFrame('additiveTriangleParticle.jpg');
-	        // this.sprite = PIXI.Sprite.fromFrame('additiveHardParticle.jpg');
-	        var _this = _possibleConstructorReturn(this, (Particle.__proto__ || Object.getPrototypeOf(Particle)).call(this));
+	    var _this = _possibleConstructorReturn(this, (Particle.__proto__ || Object.getPrototypeOf(Particle)).call(this));
 	
-	        _this.sprite = params.sprite ? params.sprite : _pixi2.default.Sprite.fromFrame(params.particleSrc ? params.particleSrc : 'additiveParticle.png');
-	        _this.sprite.blendMode = params.blendMode != undefined ? params.blendMode : _pixi2.default.BLEND_MODES.ADD;
-	        _this.sprite.anchor.set(0.5);
-	        _this.sprite.tint = params.tint ? params.tint : 0xFFFFFF;
-	        _this.scale.set(params.scale != undefined ? params.scale : 2.5);
-	        _this.addChild(_this.sprite);
-	        _this.alpha = 1;
-	        _this.scaleIncrease = params.scaleIncrease != undefined ? params.scaleIncrease : { x: 0, y: 0 };
-	        _this.kill = false;
-	        _this.velocity = params.velocity ? params.velocity : { x: (Math.random() - 0.5) / 2, y: -Math.random() * 1.2 };
-	        _this.alphaScale = params.alphaScale != null ? params.alphaScale : [0, 0.2, 0];
-	        _this.maxLifetime = params.lifetime ? params.lifetime : 2;
-	        _this.rotationSpeed = params.rotationSpeed ? params.rotationSpeed : 0;
-	        _this.life = _this.maxLifetime;
-	        _this.nlife = 0;
-	        _this.gravity = params.gravity ? params.gravity : 0;
+	    _this.params = params;
+	    // this.sprite = PIXI.Sprite.fromFrame('additiveTriangleParticle.jpg');
+	    // this.sprite = PIXI.Sprite.fromFrame('additiveHardParticle.jpg');
+	    _this.reset();
 	
-	        return _this;
+	    return _this;
+	  }
+	
+	  _createClass(Particle, [{
+	    key: 'reset',
+	    value: function reset() {
+	      this.sprite = this.params.sprite ? this.params.sprite : _pixi2.default.Sprite.fromFrame(this.params.particleSrc ? this.params.particleSrc : 'additiveParticle.png');
+	      this.sprite.blendMode = this.params.blendMode != undefined ? this.params.blendMode : _pixi2.default.BLEND_MODES.ADD;
+	      this.spawnArea = this.params.spawnArea != undefined ? this.params.spawnArea : { x: 0, y: 0, w: 1, h: 1 };
+	      this.sprite.anchor.set(0.5);
+	      this.sprite.tint = this.params.tint ? this.params.tint : 0xFFFFFF;
+	      this.scale.set(this.params.scale != undefined ? this.params.scale : 2.5);
+	      this.addChild(this.sprite);
+	      this.alpha = 1;
+	      this.scaleIncrease = this.params.scaleIncrease != undefined ? this.params.scaleIncrease : { x: 0, y: 0 };
+	      this.kill = false;
+	      this.velocity = this.params.velocity ? this.params.velocity : { x: (Math.random() - 0.5) / 2, y: -Math.random() * 1.2 };
+	      this.alphaScale = this.params.alphaScale != null ? this.params.alphaScale : [0, 0.2, 0];
+	      this.maxLifetime = this.params.lifetime ? this.params.lifetime : 2;
+	      this.rotationSpeed = this.params.rotationSpeed ? this.params.rotationSpeed : 0;
+	      this.life = this.maxLifetime;
+	      this.nlife = 0;
+	      this.gravity = this.params.gravity ? this.params.gravity : 0;
+	
+	      this.x = (this.spawnArea.w - this.spawnArea.x) * Math.random();
+	      this.y = (this.spawnArea.h - this.spawnArea.y) * Math.random();
 	    }
+	  }, {
+	    key: 'update',
+	    value: function update(dt) {
+	      this.sprite.rotation += this.rotationSpeed;
+	      this.life -= dt;
+	      this.nlife = this.life / this.maxLifetime;
+	      this.velocity.y += this.gravity;
+	      this.x += this.velocity.x;
+	      this.y += this.velocity.y;
+	      this.nAlpha = this.updateAlphaScale(1 - this.nlife);
+	      if (this.nAlpha) this.alpha = this.nAlpha; //!this.nAlpha?1:this.nAlpha
 	
-	    _createClass(Particle, [{
-	        key: 'update',
-	        value: function update(dt) {
-	            this.sprite.rotation += this.rotationSpeed;
-	            this.life -= dt;
-	            this.nlife = this.life / this.maxLifetime;
-	            this.velocity.y += this.gravity;
-	            this.x += this.velocity.x;
-	            this.y += this.velocity.y;
-	            this.nAlpha = this.updateAlphaScale(1 - this.nlife);
-	            if (this.nAlpha) this.alpha = this.nAlpha; //!this.nAlpha?1:this.nAlpha
+	      this.scale.x += this.scaleIncrease.x;
+	      this.scale.y += this.scaleIncrease.y;
 	
-	            this.scale.x += this.scaleIncrease.x;
-	            this.scale.y += this.scaleIncrease.y;
+	      // console.log(this.parent);
+	      if (this.life < 0) {
+	        this.kill = true;
+	        if (this.parent) this.parent.removeChild(this);
+	      }
+	    }
+	  }, {
+	    key: 'updateAlphaScale',
+	    value: function updateAlphaScale(nTime) {
+	      var tempId = Math.floor(nTime * this.alphaScale.length);
 	
-	            // console.log(this.parent);
-	            if (this.life < 0) {
-	                this.kill = true;
-	                if (this.parent) this.parent.removeChild(this);
-	            }
-	        }
-	    }, {
-	        key: 'updateAlphaScale',
-	        value: function updateAlphaScale(nTime) {
-	            var tempId = Math.floor(nTime * this.alphaScale.length);
+	      //console.log(tempId);
+	      if (this.alphaScale.length <= 1 || tempId >= this.alphaScale.length - 1) {
+	        return false;
+	      }
+	      var tempValue = this.alphaScale[tempId];
+	      var transition = this.alphaScale[tempId + 1] - tempValue;
 	
-	            //console.log(tempId);
-	            if (this.alphaScale.length <= 1 || tempId >= this.alphaScale.length - 1) {
-	                return false;
-	            }
-	            var tempValue = this.alphaScale[tempId];
-	            var transition = this.alphaScale[tempId + 1] - tempValue;
+	      var mtime = 1 / this.alphaScale.length;
+	      var time = nTime - tempId * mtime;
+	      var startvalue = tempValue;
+	      var changevalue = this.alphaScale[tempId + 1] - startvalue;
 	
-	            var mtime = 1 / this.alphaScale.length;
-	            var time = nTime - tempId * mtime;
-	            var startvalue = tempValue;
-	            var changevalue = this.alphaScale[tempId + 1] - startvalue;
+	      var ret = changevalue * time / mtime + startvalue;
+	      return ret;
+	    }
+	  }]);
 	
-	            var ret = changevalue * time / mtime + startvalue;
-	            return ret;
-	        }
-	    }]);
-	
-	    return Particle;
+	  return Particle;
 	}(_pixi2.default.Container);
 	
 	exports.default = Particle;
